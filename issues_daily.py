@@ -4,7 +4,6 @@ import os
 import subprocess
 from dotenv import load_dotenv
 
-# GitHub API token (replace 'your_github_token_here' with your actual token)
 # Load environment variables from .env file
 load_dotenv()
 
@@ -38,9 +37,14 @@ def fetch_issues():
     return issues[:ISSUES_PER_DAY]  # Return only up to ISSUES_PER_DAY issues
 
 def save_issues_to_md(issues):
+    # Ensure the issues directory exists
+    issues_dir = "issues"
+    if not os.path.exists(issues_dir):
+        os.makedirs(issues_dir)
+    
     # Create a new MD file with date and time in the filename
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f"issues_{timestamp}.md"
+    filename = os.path.join(issues_dir, f"issues_{timestamp}.md")
     with open(filename, "w") as file:
         file.write(f"# GitHub Issues for {timestamp}\n\n")
         for issue in issues:
@@ -59,13 +63,28 @@ def save_issues_to_md(issues):
     return filename
 
 def commit_to_repo(filename):
+    # Create a timestamp and details for the commit message
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    labels_str = ', '.join(LABELS)
+    languages_str = ', '.join(LANGUAGES)
+    
+    # Detailed commit message
+    commit_message = (
+        f"Added issues collected on {timestamp}\n\n"
+        f"Filters applied:\n"
+        f"  - Labels: {labels_str}\n"
+        f"  - Languages: {languages_str}\n"
+        f"  - Created after: {CREATED_AFTER}\n\n"
+        f"Filename: {filename}"
+    )
+    
     # Configure Git
     subprocess.run(["git", "config", "--global", "user.name", "github-actions[bot]"])
     subprocess.run(["git", "config", "--global", "user.email", "github-actions[bot]@users.noreply.github.com"])
 
     # Add, commit, and push the file
     subprocess.run(["git", "add", filename])
-    subprocess.run(["git", "commit", "-m", f"Add issues for {filename}"])
+    subprocess.run(["git", "commit", "-m", commit_message])
     subprocess.run(["git", "push"])
 
 def main():
