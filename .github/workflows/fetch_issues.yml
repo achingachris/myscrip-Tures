@@ -26,9 +26,3 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python issues_daily.py
-
-      - name: Commit and push changes
-        run: |
-          git add .
-          git commit -m "Add issues for day $(date +'%Y-%m-%d')"
-          git push
