@@ -17,7 +17,7 @@ HEADERS = {
 # Query parameters
 LABELS = ["documentation", "good first issue", "help wanted", "duplicate", "question"]
 LANGUAGES = ["python", "javascript"]
-CREATED_AFTER = "2024-10-01"  # Only include issues created on or after this date
+CREATED_AFTER = "2024-10-01"
 ISSUES_PER_DAY = 20
 
 def fetch_issues():
