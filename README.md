@@ -1,4 +1,5 @@
-## Documentation: Running `issues_daily.py` Locally
+# Documentation: 
+## Running `issues_daily.py` Locally
 
 This script fetches open GitHub issues from Python and JavaScript repositories, filters them by specific labels, and saves the results in a Markdown file within an `issues/` directory. It also commits and pushes the results to your repository if configured to do so.
 
@@ -24,7 +25,7 @@ cd your-repo-name
 
 ### Step 2: Set Up Environment Variables
 
-1. Create a `.env` file in the root directory of your project.
+1. Create a `.env` file in the root directory of your project. (Or you can follow the `.env.example` provided)
 2. Open the `.env` file and add your GitHub token:
 
    ```env
